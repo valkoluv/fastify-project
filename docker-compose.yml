@@ -1,0 +1,23 @@
+services:
+  fastify-app:
+    build: .
+    ports:
+      - "3000:3000"
+    networks:
+      - app-network
+
+  nginx:
+    image: nginx
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./static:/usr/share/nginx/html
+    ports:
+      - "8080:80"
+    depends_on:
+      - fastify-app
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
